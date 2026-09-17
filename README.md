@@ -31,8 +31,9 @@ The symlink is required so clangd picks up the compile database.
 
 ## Non-macOS / non-Homebrew setup
 
-`CMakeLists.txt` hardcodes a Homebrew LLVM toolchain for mac. On Linux or a
-different LLVM install, remove/change these four lines:
+`CMakeLists.txt` hardcodes a Homebrew LLVM toolchain for mac (the
+`CMAKE_CXX_STDLIB_MODULES_JSON` path is a mac-specific libc++ bug). On Linux
+just remove these four lines and make sure your compiler is clang:
 
 ```cmake
 set(CMAKE_CXX_COMPILER /opt/homebrew/opt/llvm/bin/clang++)
@@ -42,22 +43,10 @@ set(CMAKE_CXX_STDLIB_MODULES_JSON
     /opt/homebrew/Cellar/llvm/23.1.0/lib/c++/libc++.modules.json)
 ```
 
-After removing them, CMake falls back to the system default C++ compiler and
-archiver — but the project requires Clang with C++23 module support
-(`import std`, `CMAKE_EXPERIMENTAL_CXX_IMPORT_STD`), plus a supported LLVM
-version where `libc++.modules.json` ships. If `CMAKE_CXX_STDLIB_MODULES_JSON`
-is removed, you must either point it at your LLVM's `libc++.modules.json` or
-set it via the CMake cache, e.g.:
+Then configure with clang and build:
 
 ```sh
-cmake -B build -G Ninja \
-  -DCMAKE_CXX_COMPILER=/path/to/clang++ \
-  -DCMAKE_CXX_STDLIB_MODULES_JSON=/path/to/llvm/lib/c++/libc++.modules.json
-```
-
-Then build:
-
-```sh
+cmake -B build -G Ninja -DCMAKE_CXX_COMPILER=clang++
 cmake --build build
 ln -s build/compile_commands.json compile_commands.json
 ```
