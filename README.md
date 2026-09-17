@@ -1,6 +1,6 @@
-# Bug report: non-deterministic clangd crash after `glaze::format_error`
+# Bug report: clangd crash after `glaze::format_error`
 
-Minimal repro of a non-deterministic **clangd crash** that happens while typing
+Minimal repro of a **clangd crash** that happens while typing
 in the editor after a call to `glaze::format_error(...)` in `main.cpp`.
 
 Typing code after the `format_error` call (e.g. `std::string hi = "random";`)
