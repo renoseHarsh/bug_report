@@ -12,7 +12,8 @@ int main() {
   auto error = glaze::read_json(company, json);
   std::string buffer;
   std::string err = glaze::format_error(error, buffer);
-  // start typing after this line (e.g. std::string hi = "random") -> clangd crashes
+  // start typing after this line
+  // e.g. std::string hi = "random" crashes clangd
 
   return 0;
 }
